@@ -7,7 +7,7 @@ export class FlightController {
     constructor(private readonly flightService: FlightService) {}
     
     @Get()
-    getFlights(): any {
+    async getFlights(){
         return this.flightService.getFlights();
 
     }
