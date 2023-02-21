@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+<!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
 
     <ng-container matColumnDef="flight_no">
         <th mat-header-cell *matHeaderCellDef>Flight Number</th>
@@ -29,4 +29,34 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   
-  
+   -->
+
+  <mat-card *ngFor="let flight of flights">
+    <mat-card-header>
+      <mat-card-title>{{flight.slices[0].origin_name}}
+        <span>&#8644;</span>
+        {{flight.slices[0].destination_name}}
+        {{flight.price}} Euro
+      </mat-card-title>
+      
+    </mat-card-header>
+    <mat-card-content>
+      <table>
+        <tr>
+          <th>Flight Number</th>
+          <th>Departure Date</th>
+          <th>Arrival Date</th>
+        </tr>
+        <tr>
+          <td>{{flight.slices[0].flight_number}}</td>
+          <td>{{flight.slices[0].departure_date_time_utc}}</td>
+          <td>{{flight.slices[0].arrival_date_time_utc}}</td>
+        </tr>
+        <tr>
+          <td>{{flight.slices[1].flight_number}}</td>
+          <td>{{flight.slices[1].departure_date_time_utc}}</td>
+          <td>{{flight.slices[1].arrival_date_time_utc}}</td>
+        </tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
