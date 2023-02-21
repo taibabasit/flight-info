@@ -58,6 +58,8 @@
     "@types/cache-manager": "^4.0.2",
     "axios": "^1.0.0",
     "cache-manager": "^5.1.6",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.40",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

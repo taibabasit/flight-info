@@ -1,62 +1,46 @@
-<!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-
-    <ng-container matColumnDef="flight_no">
-        <th mat-header-cell *matHeaderCellDef>Flight Number</th>
-        <td mat-cell *matCellDef="let element">{{element.slices[0].flight_number}}</td>
-      </ng-container>
-
-    <ng-container matColumnDef="origin">
-      <th mat-header-cell *matHeaderCellDef>Origin</th>
-      <td mat-cell *matCellDef="let element">{{element.slices[0].origin_name}}</td>
-    </ng-container>
-  
-    <ng-container matColumnDef="destination">
-      <th mat-header-cell *matHeaderCellDef>Destination</th>
-      <td mat-cell *matCellDef="let element">{{element.slices[0].destination_name}}</td>
-    </ng-container>
-  
-    <ng-container matColumnDef="departure_date_time_utc">
-      <th mat-header-cell *matHeaderCellDef>Departure Date</th>
-      <td mat-cell *matCellDef="let element">{{element.slices[0].departure_date_time_utc}}</td>
-    </ng-container>
-  
-    <ng-container matColumnDef="arrival_date_time_utc">
-      <th mat-header-cell *matHeaderCellDef>Arrival Date</th>
-      <td mat-cell *matCellDef="let element">{{element.slices[0].arrival_date_time_utc}}</td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  
-   -->
-
-  <mat-card *ngFor="let flight of flights">
+  <mat-card class="flight-parent-mat-card" *ngFor="let flight of flights">
     <mat-card-header>
       <mat-card-title>{{flight.slices[0].origin_name}}
         <span>&#8644;</span>
         {{flight.slices[0].destination_name}}
-        {{flight.price}} Euro
       </mat-card-title>
-      
+      <mat-card-subtitle>Round Trip Cost  {{flight.price}} Euro</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <table>
-        <tr>
-          <th>Flight Number</th>
-          <th>Departure Date</th>
-          <th>Arrival Date</th>
-        </tr>
-        <tr>
-          <td>{{flight.slices[0].flight_number}}</td>
-          <td>{{flight.slices[0].departure_date_time_utc}}</td>
-          <td>{{flight.slices[0].arrival_date_time_utc}}</td>
-        </tr>
-        <tr>
-          <td>{{flight.slices[1].flight_number}}</td>
-          <td>{{flight.slices[1].departure_date_time_utc}}</td>
-          <td>{{flight.slices[1].arrival_date_time_utc}}</td>
-        </tr>
-      </table>
+      <div>
+        <div>
+          <mat-card class="flight-info-mat-card">
+            <mat-card-header>
+              <mat-card-title>
+                <span class="material-icons">flight_takeoff</span>
+                Departing Flight
+              </mat-card-title>
+              <mat-card-subtitle>Flight Number: {{ flight.slices[0].flight_number }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+             {{flight.slices[0].origin_name}}: {{ flight.slices[0].departure_date_time_utc }}
+             <span class="material-icons"> arrow_forward </span>
+              {{flight.slices[0].destination_name}}: {{ flight.slices[0].arrival_date_time_utc}}
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div>
+          <mat-card class="flight-info-mat-card">
+            <mat-card-header>
+              <mat-card-title>
+                <span class="material-icons"> flight_land </span>
+                Arriving Flight
+              </mat-card-title>
+              <mat-card-subtitle>Flight Number: {{ flight.slices[0].flight_number }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              {{flight.slices[1].origin_name}}: {{ flight.slices[1].departure_date_time_utc}}
+             <span class="material-icons"> arrow_forward </span>
+              {{flight.slices[0].destination_name}}: {{ flight.slices[1].arrival_date_time_utc}}
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
+  

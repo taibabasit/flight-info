@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlightService } from '../flight.service';
-import { MatTableDataSource } from '@angular/material/table';
+import * as moment from 'moment-timezone';
 
 
 @Component({
@@ -11,25 +11,16 @@ import { MatTableDataSource } from '@angular/material/table';
 export class FlightComponent implements OnInit {
   constructor(private flightService:FlightService) {}
 
-  // displayedColumns: string[] = ['flight_no', 'origin', 'destination', 'arrival_date_time_utc', 'departure_date_time_utc'];
-  // dataSource:MatTableDataSource<any[]>= new MatTableDataSource<any[]>([]);
-
-  // getFlights() {
-  //   this.flightService.getFlights().subscribe((res:any) => {
-  //   this.dataSource = res.flights;
-  //   return res.flights;
-  //   });
-  // }
-  // ngOnInit() {   
-
-  //   this.getFlights();
-  //   console.log(this.dataSource);
-  // }
-
   flights:any[] = [];
   ngOnInit() {
     this.flightService.getFlights().subscribe((res:any) => {
       this.flights = res.flights;
+      for (const flight of this.flights) {
+        flight.slices[0].arrival_date_time_utc = moment(flight.slices[0].arrival_date_time_utc).format('DD-MM-YYYY HH:mm:ss');
+        flight.slices[0].departure_date_time_utc = moment(flight.slices[0].departure_date_time_utc).format('DD-MM-YYYY HH:mm:ss');
+        flight.slices[1].arrival_date_time_utc = moment(flight.slices[1].arrival_date_time_utc).format('DD-MM-YYYY HH:mm:ss');
+        flight.slices[1].departure_date_time_utc = moment(flight.slices[1].departure_date_time_utc).format('DD-MM-YYYY HH:mm:ss');
+      }
       console.log(this.flights);
     });
   }
