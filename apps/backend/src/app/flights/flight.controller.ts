@@ -8,7 +8,11 @@ export class FlightController {
     
     @Get()
     async getFlights(){
-        return this.flightService.getFlights();
-
+        const flight_sources =
+        [
+            'https://coding-challenge.powerus.de/flight/source1',
+            'https://coding-challenge.powerus.de/flight/source2'
+        ];
+        return this.flightService.getFlights(flight_sources);
     }
 }
