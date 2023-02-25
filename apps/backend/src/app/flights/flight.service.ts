@@ -14,10 +14,9 @@ export class FlightService {
         const flightsMap = {};
         const unique_flights = [];
         for (const flight of flights) {
-            const flightKey = flight.slices[0].flight_number + flight.slices[0].departure_date_time_utc;
-            const flightValue = flight.slices[1].flight_number + flight.slices[1].departure_date_time_utc;
-            if (!flightsMap[flightKey] || flightsMap[flightKey] != flightValue){
-                flightsMap[flightKey] = flightValue;
+            const flightKey = flight.slices[0].flight_number + flight.slices[0].departure_date_time_utc + flight.slices[1].flight_number + flight.slices[1].departure_date_time_utc;;
+            if (!flightsMap[flightKey]){
+                flightsMap[flightKey] = 1;
                 unique_flights.push(flight);
             }
         }
