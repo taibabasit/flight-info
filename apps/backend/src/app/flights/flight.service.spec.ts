@@ -6,9 +6,6 @@ import { FlightService } from './flight.service';
 import { of, throwError, delay } from 'rxjs';
 import { AxiosResponse } from 'axios';
 
-const flights = [{ id: 1 }, { id: 2 }, { id: 3 }];
-
-
 describe('FlightService', () => {
   let service: FlightService;
   let cacheManager: jest.Mocked<Cache>;
@@ -40,7 +37,7 @@ describe('FlightService', () => {
 
   describe('getFlights', () => {
     it('should return cached flights if available', async () => {
-      const cachedFlights = [{ id: 1 }];
+      const cachedFlights = require('./dummy_flight/flight1.json');
       cacheManager.get.mockImplementationOnce(() => Promise.resolve(cachedFlights));
       const flights = await service.getFlights();
       expect(flights).toEqual({ flights: cachedFlights });
@@ -49,12 +46,12 @@ describe('FlightService', () => {
     });
     it('should fetch flights from sources, remove duplicates, and cache them', async () => {
 
-        const flight1 = [{ id: 1 }];
-        const flight2 = [{ id: 2 }];
+        const flight1 = require('./dummy_flight/flight1.json');
+        const flight2 = require('./dummy_flight/flight2.json');
 
         jest.spyOn(service['httpService'], 'get').mockReturnValueOnce(of({ data: { flights: flight1 } } as AxiosResponse)).mockReturnValueOnce(of({ data: { flights: flight2 } } as AxiosResponse));
         const mergedFlights = [...flight1, ...flight2];
-        const uniqueFlights = [{ id: 1 }, { id: 2 }];
+        const uniqueFlights = require('./dummy_flight/unique_flight.json');
         cacheManager.get.mockImplementationOnce(() => Promise.resolve(null));
         jest.spyOn(service, 'removeDuplicates').mockReturnValueOnce(uniqueFlights);
     
@@ -68,10 +65,9 @@ describe('FlightService', () => {
         expect(service['httpService'].get).toHaveBeenCalledTimes(2);
       });
     it('should return data from working source even if one of the sources fails under 1 sec', async () => {
-        const flight1 = [{ id: 1 }];
-        const flight2 = [{ id: 2 }];
+        const flight1 = require('./dummy_flight/flight1.json');
         const mergedFlights = [...flight1];
-        const uniqueFlights = [{ id: 1 }];
+        const uniqueFlights = flight1
         cacheManager.get.mockImplementationOnce(() => Promise.resolve(null));
         jest.spyOn(service, 'removeDuplicates').mockReturnValueOnce(uniqueFlights);
         jest.spyOn(service['httpService'], 'get').mockReturnValueOnce(of({ data: { flights: flight1 } } as AxiosResponse)).mockReturnValueOnce(throwError(()=>'error'));
@@ -84,10 +80,10 @@ describe('FlightService', () => {
         expect(service['httpService'].get).toHaveBeenCalledTimes(2);
     },1000);
     it('should respond with available data under 1 sec if any source takes too long', async () => {
-        const flight1 = [{ id: 1 }];
-        const flight2 = [{ id: 2 }];
+        const flight1 = require('./dummy_flight/flight1.json');
+        const flight2 = require('./dummy_flight/flight2.json');
         const mergedFlights = [...flight1];
-        const uniqueFlights = [{ id: 1 }];
+        const uniqueFlights = flight1;
         cacheManager.get.mockImplementationOnce(() => Promise.resolve(null));
         jest.spyOn(service, 'removeDuplicates').mockReturnValueOnce(uniqueFlights);
         jest.spyOn(service['httpService'], 'get').mockReturnValueOnce(of({ data: { flights: flight1 } } as AxiosResponse)).mockReturnValueOnce(of({ data: { flights: flight2 } } as AxiosResponse).pipe(delay(5000)));
