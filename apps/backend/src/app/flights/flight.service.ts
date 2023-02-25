@@ -26,7 +26,12 @@ export class FlightService {
     
     // This function returns the list of flights from the cache if it exists, else it fetches the flights from the flight sources, 
     // removes the duplicates and stores it in the cache
-    async getFlights(flight_sources){
+    async getFlights(){
+        const flight_sources =
+        [
+            'https://coding-challenge.powerus.de/flight/source1',
+            'https://coding-challenge.powerus.de/flight/source2'
+        ];
         const cachedFlights = await this.cacheManager.get('flights');
         if (cachedFlights) {
             return {"flights" : cachedFlights};
@@ -36,7 +41,7 @@ export class FlightService {
         for (const source of flight_sources) {
             try
             {
-            const flight_source  = await firstValueFrom(this.httpService.get(source).pipe(timeout(700)));
+            const flight_source  = await firstValueFrom(this.httpService.get(source).pipe(timeout(500)));
             all_flights.push(...flight_source.data.flights);
             }
             catch (error) {
